@@ -31,9 +31,7 @@ class DocumentRegistry(object):
         for idx, docs in iteritems(self._indices):
             if index._name == idx._name:
                 docs.add(doc_class)
-                if doc_class not in idx._doc_types:
-                    idx._doc_types.append(doc_class)
-                    return
+                return
 
         self._indices[index].add(doc_class)
 
