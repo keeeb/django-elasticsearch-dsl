@@ -150,7 +150,7 @@ You can use an ObjectField or a NestedField.
                 'manufacturer'
             )
 
-        def get_instances_from_related(self, related_instance):
+        def get_instances_from_related(self, related_instance, instance_deleted):
             """If related_models is set, define how to retrieve the Car instance(s) from the related model.
             The related_models option should be used with caution because it can lead in the index
             to the updating of a lot of items.

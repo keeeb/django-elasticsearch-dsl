@@ -49,7 +49,7 @@ class CarDocument(Document):
     class Index:
         name = "car"
 
-    def get_instances_from_related(self, related_instance):
+    def get_instances_from_related(self, related_instance, instance_deleted):
         if isinstance(related_instance, Ad):
             return related_instance.car
 

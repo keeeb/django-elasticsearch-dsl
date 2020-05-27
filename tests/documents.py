@@ -58,7 +58,7 @@ class CarDocument(Document):
         return super(CarDocument, self).get_queryset().select_related(
             'manufacturer')
 
-    def get_instances_from_related(self, related_instance):
+    def get_instances_from_related(self, related_instance, instance_deleted):
         if isinstance(related_instance, Ad):
             return related_instance.car
 
@@ -123,7 +123,7 @@ class CarWithPrepareDocument(Document):
             }
         return {}
 
-    def get_instances_from_related(self, related_instance):
+    def get_instances_from_related(self, related_instance, instance_deleted):
         return related_instance.car_set.all()
 
 

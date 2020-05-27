@@ -93,7 +93,7 @@ class DocumentRegistry(object):
                 if instance.__class__ in doc.django.related_models:
                     yield doc
 
-    def update_related(self, instance, **kwargs):
+    def update_related(self, instance, instance_deleted=False, **kwargs):
         """
         Update docs that have related_models.
         """
@@ -103,7 +103,7 @@ class DocumentRegistry(object):
         for doc in self._get_related_doc(instance):
             doc_instance = doc()
             try:
-                related = doc_instance.get_instances_from_related(instance)
+                related = doc_instance.get_instances_from_related(instance, instance_deleted)
             except ObjectDoesNotExist:
                 related = None
 
@@ -114,18 +114,7 @@ class DocumentRegistry(object):
         """
         Remove `instance` from related models.
         """
-        if not DEDConfig.autosync_enabled():
-            return
-
-        for doc in self._get_related_doc(instance):
-            doc_instance = doc(related_instance_to_ignore=instance)
-            try:
-                related = doc_instance.get_instances_from_related(instance)
-            except ObjectDoesNotExist:
-                related = None
-
-            if related is not None:
-                doc_instance.update(related, **kwargs)
+        self.update_related(instance, instance_deleted=True, **kwargs)
 
     def update(self, instance, **kwargs):
         """
@@ -173,6 +162,12 @@ class DocumentRegistry(object):
             )
 
         return set(iterkeys(self._indices))
+
+    def __contains__(self, model):
+        """
+        Checks that model is in registry
+        """
+        return model in self._models or model in self._related_models
 
 
 registry = DocumentRegistry()
