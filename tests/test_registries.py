@@ -95,9 +95,9 @@ class DocumentRegistryTestCase(WithFixturesMixin, TestCase):
         doc_d1.get_instances_from_related.return_value = related_instance
         self.registry.update_related(instance_e)
 
-        doc_d1.get_instances_from_related.assert_called_once_with(instance_e)
+        doc_d1.get_instances_from_related.assert_called_once_with(instance_e, False)
         doc_d1.update.assert_called_once_with(related_instance)
-        doc_d2.get_instances_from_related.assert_called_once_with(instance_e)
+        doc_d2.get_instances_from_related.assert_called_once_with(instance_e, False)
         doc_d2.update.assert_called_once_with(related_instance)
 
         doc_d1.get_instances_from_related.reset_mock()
@@ -106,7 +106,7 @@ class DocumentRegistryTestCase(WithFixturesMixin, TestCase):
         doc_d2.update.reset_mock()
 
         self.registry.update_related(instance_b)
-        doc_d1.get_instances_from_related.assert_called_once_with(instance_b)
+        doc_d1.get_instances_from_related.assert_called_once_with(instance_b, False)
         doc_d1.update.assert_called_once_with(related_instance)
         doc_d2.get_instances_from_related.assert_not_called()
         doc_d2.update.assert_not_called()
@@ -120,7 +120,7 @@ class DocumentRegistryTestCase(WithFixturesMixin, TestCase):
         doc_d1.get_instances_from_related.return_value = None
         self.registry.update_related(instance)
 
-        doc_d1.get_instances_from_related.assert_called_once_with(instance)
+        doc_d1.get_instances_from_related.assert_called_once_with(instance, False)
         doc_d1.update.assert_not_called()
 
     def test_delete_instance(self):
